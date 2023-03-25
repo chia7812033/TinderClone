@@ -2,22 +2,23 @@ import { ImageBackground, StyleSheet, Text, View } from "react-native";
 
 import React from 'react'
 
-const Card = () => {
+const Card = ({ user }) => {
+  const { image, name, bio } = user;
   return (
     <View
-      className='w-[95%] h-[70%] bg-red-600 rounded-lg'
+      className='w-[100%] h-[80%] bg-red-600 rounded-lg'
       style={styles.shadow}
     >
       <ImageBackground
         source={{
-          uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/zuck.jpeg",
+          uri: image,
         }}
         className='w-[100%] h-[100%] rounded-lg overflow-hidden flex justify-end'
       >
         <View className='m-4 space-y-1'>
-          <Text className='text-3xl text-white font-bold '>Zuck</Text>
+          <Text className='text-3xl text-white font-bold '>{name}</Text>
           <Text className='text-lg text-white leading-[24px]'>
-            No need to send me your nudes, I already saw them
+            {bio}
           </Text>
         </View>
       </ImageBackground>
