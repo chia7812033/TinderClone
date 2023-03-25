@@ -49,8 +49,17 @@ const TopHeader = ({activeScreen , setActiveScreen}) => {
       <TouchableOpacity>
         <Ionicons name='ios-chatbubbles' size={30} color={color} />
       </TouchableOpacity>
-      <TouchableOpacity>
-        <FontAwesome name='user' size={30} color={color} />
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Profile");
+          setActiveScreen("Profile");
+        }}
+      >
+        <FontAwesome
+          name='user'
+          size={30}
+          color={activeScreen === "Profile" ? activeColor : color}
+        />
       </TouchableOpacity>
     </View>
   );
