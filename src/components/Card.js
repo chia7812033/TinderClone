@@ -6,7 +6,7 @@ const Card = ({ user }) => {
   const { image, name, bio } = user;
   return (
     <View
-      className='w-[100%] h-[80%] bg-red-600 rounded-lg'
+      className='w-[100%] h-[80%] bg-[#fefefe] rounded-lg'
       style={styles.shadow}
     >
       <ImageBackground
