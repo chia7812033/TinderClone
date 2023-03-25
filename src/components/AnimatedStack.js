@@ -101,11 +101,11 @@ const AnimatedStack = ({ users, renderItem, onSwipeRight, onSwipeLeft }) => {
     setNextIndex(currentIndex + 1);
   }, [currentIndex]);
   return (
-    <GestureHandlerRootView className="flex-1 w-[90%]">
+    <GestureHandlerRootView className="flex-1 py-5 w-full">
       {nextProfile && (
         <Animated.View
           style={nextCardStyle}
-          className='absolute top-0 right-0 left-0 bottom-0 justify-center items-center'
+          className='absolute top-5 right-0 left-0 bottom-0 justify-center items-center'
         >
           {renderItem({ item: nextProfile })}
         </Animated.View>
