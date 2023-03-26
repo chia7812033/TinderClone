@@ -1,17 +1,40 @@
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Auth, DataStore } from "aws-amplify";
-import { Pressable, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
 
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { User } from "../models/";
-import { useState } from "react";
 
 const ProfileScreen = () => {
+  const [user, setUser] = useState(null);
+
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [gender, setGender] = useState();
   const [lookingFor, setLookingFor] = useState();
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const user = await Auth.currentAuthenticatedUser();
+
+      const dbUsers = await DataStore.query(User, (c) =>
+        c.sub.eq(user.attributes.sub)
+      );
+      if (dbUsers.length < 0) {
+        return;
+      }
+      const dbUser = dbUsers[0];
+      setUser(dbUser);
+
+      setName(dbUser.name);
+      setBio(dbUser.bio);
+      setGender(dbUser.gender);
+      setLookingFor(dbUser.lookingFor);
+    };
+    getCurrentUser();
+  }, []);
 
   const isValid = () => {
     return name && bio && gender && lookingFor;
@@ -23,20 +46,39 @@ const ProfileScreen = () => {
       return;
     }
 
-    const user = await Auth.currentAuthenticatedUser();
+    if (user) {
+      const updatedUser = User.copyOf(user, (draft) => {
+        draft.name = name;
+        draft.bio = bio;
+        draft.gender = gender;
+        draft.lookingFor = lookingFor;
+      });
 
-    const newUser = new User({
-      name,
-      bio,
-      gender,
-      lookingFor,
-      image:
-        "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/zuck.jpeg",
-    });
-    try {
-      await DataStore.save(newUser);
-      console.log("saved");
-    } catch (e) { console.log(e) }
+      try {
+        await DataStore.save(updatedUser);
+        Alert.alert("User updated successfully");
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      const authUser = await Auth.currentAuthenticatedUser();
+
+      const newUser = new User({
+        sub: authUser.attributes.sub,
+        name,
+        bio,
+        gender,
+        lookingFor,
+        image:
+          "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/zuck.jpeg",
+      });
+      try {
+        await DataStore.save(newUser);
+        Alert.alert("User saved successfully");
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   return (

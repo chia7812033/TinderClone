@@ -47,6 +47,7 @@ type EagerUser = {
   readonly bio: string;
   readonly gender: Genders | keyof typeof Genders;
   readonly lookingFor: Genders | keyof typeof Genders;
+  readonly sub?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -62,6 +63,7 @@ type LazyUser = {
   readonly bio: string;
   readonly gender: Genders | keyof typeof Genders;
   readonly lookingFor: Genders | keyof typeof Genders;
+  readonly sub?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

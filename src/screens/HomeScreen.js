@@ -3,7 +3,6 @@ import { TouchableOpacity, View } from "react-native";
 
 import AnimatedStack from "../components/AnimatedStack";
 import Card from "../components/Card";
-import TopHeader from "../components/TopHeader";
 import users from "../../assets/data/users";
 
 export default function HomeScreen() {
