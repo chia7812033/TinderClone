@@ -16,6 +16,7 @@ const ProfileScreen = () => {
   const [lookingFor, setLookingFor] = useState();
 
   useEffect(() => {
+    
     const getCurrentUser = async () => {
       const user = await Auth.currentAuthenticatedUser();
 
@@ -62,6 +63,7 @@ const ProfileScreen = () => {
       }
     } else {
       const authUser = await Auth.currentAuthenticatedUser();
+      Alert.alert(authUser);
 
       const newUser = new User({
         sub: authUser.attributes.sub,
@@ -71,6 +73,7 @@ const ProfileScreen = () => {
         lookingFor,
         image:
           "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/zuck.jpeg",
+        matches: [],
       });
       try {
         await DataStore.save(newUser);

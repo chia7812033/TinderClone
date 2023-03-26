@@ -1,10 +1,10 @@
 {
-  "projectName": "TinderClone",
-  "version": "3.1",
-  "frontend": "javascript",
   "providers": [
     "awscloudformation"
   ],
+  "projectName": "TinderClone",
+  "version": "3.1",
+  "frontend": "javascript",
   "javascript": {
     "framework": "react-native",
     "config": {

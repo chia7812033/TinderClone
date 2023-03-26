@@ -11,17 +11,17 @@ import {
   GestureHandlerRootView,
   PanGestureHandler,
 } from "react-native-gesture-handler";
+import { Text, View, useWindowDimensions } from "react-native";
 import { useEffect, useState } from "react";
 
 import Like from "../../assets/images/LIKE.png";
 import Nope from "../../assets/images/nope.png";
 import React from "react";
-import { useWindowDimensions } from "react-native";
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
-const AnimatedStack = ({ users, renderItem, onSwipeRight, onSwipeLeft }) => {
+const AnimatedStack = ({ users, renderItem, onSwipeRight, onSwipeLeft , setCurrentUser}) => {
   const { height, width } = useWindowDimensions();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
@@ -91,8 +91,8 @@ const AnimatedStack = ({ users, renderItem, onSwipeRight, onSwipeLeft }) => {
         () => runOnJS(setCurrentIndex)(currentIndex + 1)
       );
 
-      const onSwipe = event.velocityX > 0 ? onSwipeRight : onSwipeLeft;;
-      runOnJS(onSwipe)(currentProfile);
+      const onSwipe = event.velocityX > 0 ? onSwipeRight : onSwipeLeft;
+      runOnJS(onSwipe)();
     },
   });
 
@@ -100,18 +100,25 @@ const AnimatedStack = ({ users, renderItem, onSwipeRight, onSwipeLeft }) => {
     translateX.value = 0;
     setNextIndex(currentIndex + 1);
   }, [currentIndex]);
+
+  useEffect(() => {
+    setCurrentUser(currentProfile);
+   }, [currentProfile])
+
   return (
-    <GestureHandlerRootView className="flex-1 py-5 w-full">
-      {nextProfile && (
+    <GestureHandlerRootView className='flex-1 py-5 w-full'>
+      {nextProfile ? (
         <Animated.View
           style={nextCardStyle}
           className='absolute top-5 right-0 left-0 bottom-0 justify-center items-center'
         >
           {renderItem({ item: nextProfile })}
         </Animated.View>
+      ) : (
+        <></>
       )}
 
-      {currentProfile && (
+      {currentProfile ? (
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View
             style={cardStyle}
@@ -132,6 +139,10 @@ const AnimatedStack = ({ users, renderItem, onSwipeRight, onSwipeLeft }) => {
             {renderItem({ item: currentProfile })}
           </Animated.View>
         </PanGestureHandler>
+      ) : (
+        <View className='flex-1 justify-center items-center'>
+          <Text className='text-xl font-bold'>No more user</Text>
+        </View>
       )}
     </GestureHandlerRootView>
   );

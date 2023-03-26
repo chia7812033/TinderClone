@@ -1,0 +1,25 @@
+enum Genders {
+  MALE
+  FEMALE
+  OTHER
+}
+
+type Match @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  isMatch: Boolean!
+  user1ID: ID!
+  user2ID: ID!
+  users: [User] @manyToMany(relationName: "UserMatch")
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  image: String
+  bio: String!
+  gender: Genders!
+  lookingFor: Genders!
+  sub: String
+  matches: [Match] @manyToMany(relationName: "UserMatch")
+}
+ 

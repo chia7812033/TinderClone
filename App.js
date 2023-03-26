@@ -12,10 +12,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { withAuthenticator } from "aws-amplify-react-native";
 
-Amplify.configure(awsconfig);
+Amplify.configure({
+  ...awsconfig,
+  Analytics: {
+    disabled: true,
+  },
+});
 const Stack = createNativeStackNavigator();
 
-const App = () =>{
+const App = () => {
   const [activeScreen, setActiveScreen] = useState("Home");
 
   return (
@@ -45,6 +50,6 @@ const App = () =>{
       </NavigationContainer>
     </SafeAreaView>
   );
-}
+};
 
 export default withAuthenticator(App);
